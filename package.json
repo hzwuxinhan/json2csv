@@ -1,8 +1,8 @@
 {
-  "name": "json2csv",
+  "name": "json-2-csv-ts",
   "version": "0.0.5",
   "description": "convert json 2 csv and download it",
-  "main": "index.js",
+  "main": "lib/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

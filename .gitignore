@@ -1,0 +1,12 @@
+node_modules
+.nyc_output
+dist
+lib
+coverage
+.DS_Store
+.tm_properties
+server.*
+published
+*.log
+_docpress
+.vscode

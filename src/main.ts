@@ -1,10 +1,10 @@
 interface OPTION {
-    expandArray:Boolean,
-    download:Boolean,
-    fileName?:string
+    expandArray: Boolean,
+    download: Boolean,
+    fileName?: string
 }
 
-const JSONToCSVConvertor = (JSONData) => (expandArray:Boolean):string => {
+const JSONToCSVConvertor = (JSONData) => (expandArray: Boolean): string => {
 
     const checkType = DATA => {
         let type: string = 'other'
@@ -14,45 +14,53 @@ const JSONToCSVConvertor = (JSONData) => (expandArray:Boolean):string => {
     }
 
     const firstRow = type => DATA => Father => {
-        if (type !== 'object') return
-        for (let one in DATA) {
-            if (Father) {
-                Headers.push(`${Father}.${one}`)
-            }else {
-                Headers.push(one)
+        if (type === 'object') {
+            for (let one in DATA) {
+                if (Father) {
+                    Headers.indexOf(`${Father}.${one}`) < 0 ?
+                    Headers.push(`${Father}.${one}`) : null
+                } else {
+                    Headers.indexOf(one) < 0?
+                    Headers.push(one) : null
+                }
+                let newType = checkType(DATA[one])
+                firstRow(newType)(DATA[one])(Father ? `${Father}.${one}` : one)
             }
-            let newType = checkType(DATA[one])
-            firstRow(newType)(DATA[one])(Father?`${Father}.${one}`:one)
+        }else if (type === 'array' && !Father) {
+            DATA.forEach(element => {
+                let newType = checkType(element)
+                firstRow(newType)(element)(false) 
+            })
         }
     }
 
     const revert = type => DATA => Father => Tep => {
         if (type == 'object') {
-            for( let one in DATA) {
+            for (let one in DATA) {
                 let newType = checkType(DATA[one])
-                revert(newType)(DATA[one])(Father?`${Father}.${one}`:one)(Tep)
+                revert(newType)(DATA[one])(Father ? `${Father}.${one}` : one)(Tep)
             }
         }
-        if(type == 'other') {
-            const repData = typeof DATA == 'string'?DATA.replace(/,/g,"，"):DATA
+        if (type == 'other') {
+            const repData = typeof DATA == 'string' ? DATA.replace(/,/g, "，") : DATA
             const titleTmp = Headers.indexOf(Father)
-            
-            if(res[Tep]) {
+
+            if (res[Tep]) {
                 const currentTmp = res[Tep].split(",").length
-                for (let i =0 ;i < (titleTmp - currentTmp);i++) {
+                for (let i = 0; i < (titleTmp - currentTmp); i++) {
                     res[Tep] = `${res[Tep]},`
                 }
                 res[Tep] = `${res[Tep]},${repData}`
-            }else {
+            } else {
                 let tmp = ""
-                for (let i =0 ;i < titleTmp;i++) {
+                for (let i = 0; i < titleTmp; i++) {
                     tmp = `${tmp},`
                 }
                 res[Tep] = `${tmp}${repData}`
             }
         }
-        if(type == 'array') {
-            if(!expandArray) {
+        if (type == 'array') {
+            if (!expandArray) {
                 revert('other')(DATA.toString())(Father)(Tep)
                 return
             }
@@ -93,14 +101,14 @@ const DownloadFile = content => fileName => {
     return 'download success'
 }
 
-const main = (JSONData,options?:OPTION) => {
+const main = (JSONData, options?: OPTION) => {
     const newOption = Object.assign({
-        expandArray:true,
-        download:false,
-        fileName:'default.csv'
-    },options)
+        expandArray: true,
+        download: false,
+        fileName: 'default.csv'
+    }, options)
 
-    if(!newOption.download)
+    if (!newOption.download)
         return JSONToCSVConvertor(JSONData)(newOption.expandArray)
     DownloadFile(JSONToCSVConvertor(JSONData)(newOption.expandArray))(newOption.fileName)
 }

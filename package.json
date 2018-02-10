@@ -1,6 +1,6 @@
 {
   "name": "json-2-csv-ts",
-  "version": "1.0.0",
+  "version": "1.1",
   "description": "convert json 2 csv and download it",
   "main": "lib/main.js",
   "scripts": {

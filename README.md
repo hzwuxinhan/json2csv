@@ -121,3 +121,44 @@ The csvFile looks like
 | id | name | comments |
 | -- | ---- | -------- |
 | id | name | first,second,third |
+
+### Example 3
+
+```javascript
+import { json2csv } from 'json-2-csv-ts';
+const myData = [
+  {
+    id:"1",
+    name:"test"
+  },
+  {
+    id:"2",
+    des:"desc"
+  }
+]
+    
+
+try {
+  var result = json2csv(myData,{
+      expandArray:true
+  })
+  console.log(result);
+} catch (err) {
+  console.error(err);
+}
+```
+
+The result should be
+
+```
+id,name,des
+"1","test",
+"2",,"desc"
+```
+
+The csvFile looks like
+
+| id | name | des |
+| -- | ---- | -------- |
+| 1 | test |  |
+| 2 | | desc |

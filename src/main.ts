@@ -61,7 +61,7 @@ const JSONToCSVConvertor = (JSONData) => (expandArray: Boolean): string => {
         }
         if(type == 'array') {
             if(!expandArray && Father !== null) {
-                const newData = `"${DATA.join(`\r`).toString()}"`
+                const newData = `"${DATA.join(`\r\n`).toString()}"`
                 revert('other')(newData)(Father)(Tep)
                 return
             }

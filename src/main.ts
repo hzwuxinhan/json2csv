@@ -14,13 +14,24 @@ const JSONToCSVConvertor = (JSONData) => (expandArray:Boolean):string => {
     }
 
     const firstRow = type => DATA => Father => {
+        
+        if (type == 'array' && Father === null) {
+            DATA.forEach(
+                element => {
+                    let newType = checkType(element)
+                    firstRow(newType)(element)(null)
+                }
+            )
+        }
         if (type !== 'object') return
         for (let one in DATA) {
+            let head 
             if (Father) {
-                Headers.push(`${Father}.${one}`)
+                head = `${Father}.${one}`
             }else {
-                Headers.push(one)
+                head = one
             }
+            Headers.indexOf(head) < 0 ? Headers.push(head) : null
             let newType = checkType(DATA[one])
             firstRow(newType)(DATA[one])(Father?`${Father}.${one}`:one)
         }
@@ -52,8 +63,9 @@ const JSONToCSVConvertor = (JSONData) => (expandArray:Boolean):string => {
             }
         }
         if(type == 'array') {
-            if(!expandArray) {
-                revert('other')(DATA.toString())(Father)(Tep)
+            if(!expandArray && Father !== null) {
+                const newData = `"${DATA.join(`\r`).toString()}"`
+                revert('other')(newData)(Father)(Tep)
                 return
             }
             let newTep = 0
